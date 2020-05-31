@@ -1,0 +1,172 @@
+---
+title: "Linear Regression"
+author: "강동원"
+date: 2020-04-06
+categories: ["R"]
+tags: ["R Markdown", "linear", "regression"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 변수 검토
+ 먼저 이후의 작업상의 편의를 위해 디렉토리를 지정, 패키지를 불러온다. names()로 변수명을 확인하고 추가적으로 str()나 summary()등을 이용해 전체 데이터에 대해 파악한다.
+```{r}
+library('readxl')
+airbnb<-read_excel('data/airbnb.xlsx')
+air<-airbnb
+names(air)
+```
+
+
+### “property_type”은 ‘House’, ‘Aprtment’, ’Other’ 등의 3범주로 변환하시오.
+```{r}
+air$property_type<-ifelse(air$property_type=='House','House',ifelse(air$property_type=='Apartment','Apartment','Other'))
+```
+
+
+### “bed_type”은 ‘Bed’, ‘Other’ 등의 2범주로 변환하시오.
+```{r}
+air$bed_type<-ifelse(air$bed_type=='Airbed'|air$bed_type=='Real Bed','Bed','Other')
+```
+
+
+### “number_of_reviews”가 11개 이상인 데이터만 추출해서 분석에 사용하시오.
+```{r}
+air<-air[!(air$number_of_reviews<11),]
+```
+
+
+### ‘가격비(price_ratio)’ 변수를 생성하시오.
+```{r}
+library('dplyr')
+air$original_price<-exp(air$log_price)
+city_price<-aggregate(original_price~city,air,mean)
+names(city_price)[2]<-c('city_price')
+air<-left_join(air,city_price,by='city')
+air$price_ratio<-air$original_price/air$city_price*100
+```
+
+
+
+#### 1. “가격비(price_ratio)” 변수의 평균과 표준편차를 답하시오.
+```{r eval=TRUE}
+mean(air$price_ratio)
+sqrt(var(air$price_ratio))
+```
+
+
+
+#### 2. “가격비(price_ratio)”를 종속변수로 하여 선형회귀분석을 수행하시오.
+
+
+##### 데이터 전처리
+ t/f로 출력되는 변수는 TRUE/FALSE로 변환한다. 문자로 이루어진 amenities 항목은 ,의 개수에 1을 더하여 해당 숙소가 갖고 있는 편의시설 개수로 데이터를 가공한다. 추가적으로 first review, host since, last review 항목에는 미래의 날짜가 입력되어있는 경우가 많아 이상치로 판단하여 회귀모델 변수로 사용하지 않는다.
+```{r}
+air$host_has_profile_pic<-ifelse(air$host_has_profile_pic=='t',TRUE,FALSE)
+air$host_identity_verified<-ifelse(air$host_identity_verified=='t',TRUE,FALSE)
+air$instant_bookable<-ifelse(air$instant_bookable=='t',TRUE,FALSE)
+```
+
+```{r}
+library('stringr')
+air$amenity_num<-str_count(air$amenities,',')+1
+```
+
+
+##### 불필요한 변수 제거
+ id, 썸네일 url등 숙소 정보와 관련이 없는 변수를 제외한다. 또한 amenities, original_price 등 가공한 데이터의 원본 데이터도 제외한다. zipcode는 미국의 지역번호로써 유의미한 변수가 될 수 있어보이나, 해당 변수를 추가하여 이하 작업을 수행한 결과, 컴퓨터에 과한 부하가 걸려 계산이 불가능하므로 제외하도록 한다. 결측치는 비중이 크지않은 것으로 판단되어, 제외하도록 한다.
+ 변수들은 서로 독립이라는 가정 하에 아래 작업을 수행하도록 한다.
+```{r}
+air2<-subset(air,select=-c(id,log_price,amenities,description,first_review,host_since,last_review,name,neighbourhood,thumbnail_url,zipcode,original_price,city_price))
+table(is.na(air2))
+air2<-na.omit(air2)
+```
+
+
+##### 회귀식 생성
+```{r}
+lm<-lm(price_ratio~property_type+room_type+accommodates+bathrooms+bed_type+cancellation_policy+cleaning_fee+city+host_has_profile_pic+host_identity_verified+host_response_rate+instant_bookable+latitude+longitude+number_of_reviews+review_scores_rating+bedrooms+beds+amenity_num,data=air2)
+steplm<-step(lm, direction='both')
+summary(steplm)
+```
+ p-value는 유의미한 것으로 판단되나, R^2가 다소 낮은 것으로 확인된다.
+
+##### 정규성 및 등분산성 검정
+```{r echo=FALSE}
+plot(steplm,which=2)
+plot(steplm,which=1)
+```
+ 잔차 분석 결과 qqplot의 경우 직선의 모양을 띄고있지 않으며, residual plot은 점점 확산되는 양상을 보인다. 이를 교정하기 위해 Y변수를 로그 변환하도록 한다.
+
+
+##### 로그변환 후 회귀식 생성
+```{r}
+air2$log_price_ratio<-log(air2$price_ratio)
+lm2<-lm(log_price_ratio~property_type+room_type+accommodates+bathrooms+bed_type+cancellation_policy+cleaning_fee+city+host_has_profile_pic+host_identity_verified+host_response_rate+instant_bookable+latitude+longitude+number_of_reviews+review_scores_rating+bedrooms+beds+amenity_num,data=air2)
+steplm2<-step(lm2, direction='both')
+summary(steplm2)
+```
+ p-value, R^2 모두 유의하다고 볼 수 있다
+
+
+##### 정규성 및 등분산성 검정
+```{r echo=FALSE}
+plot(steplm2,which=2)
+plot(steplm2,which=1)
+```
+ qqplot은 양 끝이 살짝 곡선 형태를 띄나, 그 정도가 심하지 않아 정규성을 만족하는 것으로 볼 수 있다. residual plot은 이전 그래프와 달리, random한 양상을 띄며 등분산성을 만족하는 것으로 해석할 수 있다.
+
+
+
+##### 예측력 검정
+ 다음으로 원 데이터를 train, test 데이터로 분할하여 위 과정과 같이 회귀식을 구하고 예측력을 확인해보도록 한다. 이 과정은 회귀 모델의 overfitting을 막아 유의미한 예측을 가능토록 한다.
+ 
+##### training, test data로 분할
+train과 test 데이터의 비율은 7:3으로 한다.
+```{r}
+nobs=nrow(air2)
+set.seed(999)
+i = sample(1:nobs, round(nobs*0.7))
+train = air2[i,] 
+test = air2[-i,]
+nrow(train);nrow(test)
+```
+
+
+##### 회귀식 생성
+```{r}
+lm3<-lm(log_price_ratio~property_type+room_type+accommodates+bathrooms+bed_type+cancellation_policy+cleaning_fee+city+host_has_profile_pic+host_identity_verified+host_response_rate+instant_bookable+latitude+longitude+number_of_reviews+review_scores_rating+bedrooms+beds+amenity_num,data=train)
+steplm3<-step(lm3, direction='both')
+summary(steplm3)
+```
+ p-value, R^2 모두 유의미한 것으로 확인된다.
+
+
+##### 정규성 및 등분산성 검정
+```{r echo=FALSE}
+plot(steplm3,which=2)
+plot(steplm3,which=1)
+```
+ 정규성, 등분산성을 만족한다.
+
+
+##### 예측력
+ 회귀모델의 예측성능을 평가하도록 한다.사용하는 방법은 예측결정계수, 평균절대오차, MAPE, (R)MSE이다.
+```{r}
+pred<-predict(steplm3,newdata=test,type='response')
+
+# predictive R^2
+cor(test$log_price_ratio,pred)^2
+# MAE
+mean(abs(test$log_price_ratio-pred))
+# MAPE
+mean(abs(test$log_price_ratio-pred)/abs(test$log_price_ratio)*100)
+# RMSE
+sqrt(mean((test$log_price_ratio-pred)^2))
+```
+ 예측력 또한 충분한 것으로 확인된다.
+
+

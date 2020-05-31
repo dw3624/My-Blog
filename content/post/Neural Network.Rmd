@@ -1,0 +1,123 @@
+---
+title: "Neural Network"
+author: "강동원"
+date: 2020-05-27
+categories: ["R"]
+tags: ["R Markdown", "neural network"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+진행하기에 앞서 데이터의 정보를 확인한다.
+
+```{r}
+data<-read.csv("data/nasa.csv")
+summary(data);str(data)
+nrow(data);table(data$Hazardous)
+table(is.na(data))
+data<-data[,-c(1,2)]
+head(data)
+```
+ 해당 데이터 원본은 NASA에서 작성되었으며, 데이터의 목적은 환자의 diabete 보유여부를 예측하기 위함이다. X변수로 공전주기, 이심률 등이 있으며, Y변수로 위험혜성여부를 뜻하는 지시변수로써 Hazardous 변수가 있다. 1,2열은 혜성 ID이므로 제외하도록 한다.
+ NA값은 없으며, 총 4687개의 데이터 중 755개가 Hazardous Asteroid로 추정된다.
+
+```{r}
+str(data)
+table(data$Orbiting.Body)
+table(data$Equinox)
+head(data$Orbit.ID)
+head(data$Hazardous)
+```
+ Orbiting.Body, Equinox는 모두 동일한 값이므로 제외한다. Orbit.ID는 이름값이므로 제외한다.
+ Hazardous는 잠시 떼어놓고, normalizing 후 1,0의 값을 가지는 지시변수로 변환하도록 한다.
+
+```{r}
+library(tidyverse)
+data<-data %>%
+  select(-Orbiting.Body,-Orbit.ID,-Equinox)
+
+nor=function(x){(x-min(x))/(max(x)-min(x))}
+ndata<-nor(data[1:32])
+ndata<-mutate(ndata,hazardous=as.numeric(data$Hazardous=='TRUE'))
+table(ndata$hazardous)
+summary(ndata)
+```
+ Y변수인 hazardous를 제외한 X변수들의 normalizing이 완료되었다.
+
+
+
+# 1
+1. Training 데이터와 Test 데이터를 50:50의 비율로 분할하시오. (단, 시드번호는 학번의 뒤자리수 4개를 사용하시오)
+
+```{r}
+set.seed(2059)
+nobs=nrow(ndata)
+i=sample(1:nobs,round(nobs*0.5))
+train=ndata[i,]
+test=ndata[-i,]
+nrow(train);nrow(test)
+```
+
+
+
+# 2, 3
+2. R 프로그램의 ‘neuralnet’ 명령어를 사용하여 신경망 분석을 수행하고자 한다. 단, hyper-parameter는 아래와 같이 조정한다.
+ A. 은닉층은 1 ~ 3를 사용하고,
+ B. 각 은닉층내에서 은닉노드는 2 ~ 5 개까지 사용한다.
+ C. stepmax = 1e+06을 사용한다.
+ D. 그외 parameter 값들은 default 값을 사용한다.
+ E. 만약 신경망의 학습이 수렴하지 않아서 error가 나오는 경우에는 수렴하지 않았다고 보고서를 작성한다.
+
+3. 위 2번의 조건에 맞는 신경망을 training 데이터를 이용하여 생성하고, test 데이터를 이용하여 예측 정확도를 계산하고자 한다. 이때 예측정확도는 AUROC 값을 사용한다.
+
+```{r}
+head(test[,33])
+library(neuralnet)
+library(pROC)
+
+auc1<-c();auc2<-c();auc3<-c();auc4<-c()
+for(i in 1:3){
+  nn<-neuralnet(hazardous~.,data=train, hidden=rep(2,times=i),stepmax=1e+06,act.fct='logistic',linear.output=F)
+  pred<-compute(nn,covariate=test[,-33])
+  auc1[i]<-roc(test$hazardous~as.vector(pred$net.result))$auc
+  print(head(pred$net.result),5)
+}
+
+for(i in 1:3){
+  nn<-neuralnet(hazardous~.,data=train, hidden=rep(3,times=i),stepmax=1e+06,act.fct='logistic',linear.output=F)
+  pred<-compute(nn,covariate=test[,-33])
+  auc2[i]<-roc(test$hazardous~as.vector(pred$net.result))$auc
+  print(head(pred$net.result),5)
+}
+
+for(i in 1:3){
+  nn<-neuralnet(hazardous~.,data=train, hidden=rep(4,times=i),stepmax=1e+06,act.fct='logistic',linear.output=F)
+  pred<-compute(nn,covariate=test[,-33])
+  auc3[i]<-roc(test$hazardous~as.vector(pred$net.result))$auc
+  print(head(pred$net.result),5)
+}
+
+for(i in 1:3){
+  nn<-neuralnet(hazardous~.,data=train, hidden=rep(5,times=i),stepmax=1e+06,act.fct='logistic',linear.output=F)
+  pred<-compute(nn,covariate=test[,-33])
+  auc4[i]<-roc(test$hazardous~as.vector(pred$net.result))$auc
+  print(head(pred$net.result),5)
+}
+```
+ 총 12번의 nn신경망 분석을 실시하였고, 12개의 auc값을 얻었다.
+
+
+
+# 4
+4. 3번의 결과에서 예측정확도가 가장 높은 최적의 hyper-parameter 조합은 무엇인지 밝히시오.
+
+```{r}
+auc1;auc2;auc3;auc4
+```
+ 값은 모두 0.566 근처로 수렴하며, 그 중 가장 높은 값은 3행3열의 0.5665792이다.
+ 따라서, 예측정확도가 가장 높은 조합은 3개의 은닉층과  3개의 은닉노드임을 확인할 수 있다.
+ 
+ 
