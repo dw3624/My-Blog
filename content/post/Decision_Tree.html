@@ -1,0 +1,371 @@
+---
+title: "Decision Tree"
+author: "강동원"
+date: 2020-05-18
+categories: ["R"]
+tags: ["R Markdown", "decision tree"]
+---
+
+
+
+<p>진행하기에 앞서 데이터의 정보를 확인한다.</p>
+<pre class="r"><code>data&lt;-read.csv(&quot;data/diabetes.csv&quot;)
+table(data$Outcome)</code></pre>
+<pre><code>## 
+##   0   1 
+## 500 268</code></pre>
+<pre class="r"><code>summary(data);str(data)</code></pre>
+<pre><code>##   Pregnancies        Glucose      BloodPressure    SkinThickness  
+##  Min.   : 0.000   Min.   :  0.0   Min.   :  0.00   Min.   : 0.00  
+##  1st Qu.: 1.000   1st Qu.: 99.0   1st Qu.: 62.00   1st Qu.: 0.00  
+##  Median : 3.000   Median :117.0   Median : 72.00   Median :23.00  
+##  Mean   : 3.845   Mean   :120.9   Mean   : 69.11   Mean   :20.54  
+##  3rd Qu.: 6.000   3rd Qu.:140.2   3rd Qu.: 80.00   3rd Qu.:32.00  
+##  Max.   :17.000   Max.   :199.0   Max.   :122.00   Max.   :99.00  
+##     Insulin           BMI        DiabetesPedigreeFunction      Age       
+##  Min.   :  0.0   Min.   : 0.00   Min.   :0.0780           Min.   :21.00  
+##  1st Qu.:  0.0   1st Qu.:27.30   1st Qu.:0.2437           1st Qu.:24.00  
+##  Median : 30.5   Median :32.00   Median :0.3725           Median :29.00  
+##  Mean   : 79.8   Mean   :31.99   Mean   :0.4719           Mean   :33.24  
+##  3rd Qu.:127.2   3rd Qu.:36.60   3rd Qu.:0.6262           3rd Qu.:41.00  
+##  Max.   :846.0   Max.   :67.10   Max.   :2.4200           Max.   :81.00  
+##     Outcome     
+##  Min.   :0.000  
+##  1st Qu.:0.000  
+##  Median :0.000  
+##  Mean   :0.349  
+##  3rd Qu.:1.000  
+##  Max.   :1.000</code></pre>
+<pre><code>## &#39;data.frame&#39;:    768 obs. of  9 variables:
+##  $ Pregnancies             : int  6 1 8 1 0 5 3 10 2 8 ...
+##  $ Glucose                 : int  148 85 183 89 137 116 78 115 197 125 ...
+##  $ BloodPressure           : int  72 66 64 66 40 74 50 0 70 96 ...
+##  $ SkinThickness           : int  35 29 0 23 35 0 32 0 45 0 ...
+##  $ Insulin                 : int  0 0 0 94 168 0 88 0 543 0 ...
+##  $ BMI                     : num  33.6 26.6 23.3 28.1 43.1 25.6 31 35.3 30.5 0 ...
+##  $ DiabetesPedigreeFunction: num  0.627 0.351 0.672 0.167 2.288 ...
+##  $ Age                     : int  50 31 32 21 33 30 26 29 53 54 ...
+##  $ Outcome                 : int  1 0 1 0 1 0 1 0 1 1 ...</code></pre>
+<pre class="r"><code>table(is.na(data));table(data$Outcome)</code></pre>
+<pre><code>## 
+## FALSE 
+##  6912</code></pre>
+<pre><code>## 
+##   0   1 
+## 500 268</code></pre>
+<p>해당 데이터 원본은 National Institute of Diabetes and Digestive and Kidney Diseases에서 작성되었으며, 데이터의 목적은 환자의 diabete 보유여부를 예측하기 위함이다. X변수로 임신여부, 혈압 등이 있으며, Y변수로 당뇨보유여부를 뜻하는 지시변수로써 Outcome변수가 있다.
+NA값이 없는 총 768행의 데이터이며, diabete 보유자는 268명, 비보유자는 500명인 데이터다.</p>
+<div id="section" class="section level1">
+<h1>1</h1>
+<ol style="list-style-type: decimal">
+<li>Training 데이터와 Test 데이터를 50:50의 비율로 분할하시오. (단, 시드번호는 학번의 뒤자리수 4개를 사용하시오)</li>
+</ol>
+<pre class="r"><code>set.seed(2059)
+nobs=nrow(data)
+i=sample(1:nobs,round(nobs*0.5))
+train=data[i,]
+test=data[-i,]
+nrow(train);nrow(test)</code></pre>
+<pre><code>## [1] 384</code></pre>
+<pre><code>## [1] 384</code></pre>
+</div>
+<div id="section-1" class="section level1">
+<h1>2, 3</h1>
+<ol start="2" style="list-style-type: decimal">
+<li><p>R 프로그램의 ‘rpart’ 명령어를 사용하여 의사결정나무를 수행하고자 한다.
+단, hyper-parameter는 아래와 같이 조정한다.
+A. minsplit = 1 ~ 46 (5의 간격으로)
+B. cp = 0.001 ~ 0.01 (0.001의 간격으로)
+C. xval = 0 으로 고정
+D. 그외 parameter 값들은 default 값을 사용</p></li>
+<li><p>위 2번의 조건에 맞는 의사결정나무를 training 데이터를 이용하여 생성하고, test 데이터를 이용하여 예측 정확도를 계산하고자 한다. 이때 예측정확도는
+AUROC 값을 사용한다.</p></li>
+</ol>
+<pre class="r"><code>library(rpart)</code></pre>
+<pre><code>## Warning: 패키지 &#39;rpart&#39;는 R 버전 3.6.3에서 작성되었습니다</code></pre>
+<pre class="r"><code>library(rpart.plot)</code></pre>
+<pre><code>## Warning: 패키지 &#39;rpart.plot&#39;는 R 버전 3.6.3에서 작성되었습니다</code></pre>
+<pre class="r"><code>library(pROC)</code></pre>
+<pre><code>## Warning: 패키지 &#39;pROC&#39;는 R 버전 3.6.3에서 작성되었습니다</code></pre>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## 다음의 패키지를 부착합니다: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<pre class="r"><code>cp&lt;-seq(0.001,0.01, by=0.001)
+minsplit&lt;-seq(1,46,by=5)
+cps&lt;-rep(cp,each=10)
+minsplits&lt;-rep(minsplit,10)
+combs&lt;-cbind(cps,minsplits)
+nrow(combs)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>aucs&lt;-c()
+for(i in 1:100){
+  my.control=rpart.control(xval=0,cp=combs[i,1],minsplit=combs[i,2])
+  prob&lt;-predict(rpart(Outcome~.,data=train,method=&#39;class&#39;,control=my.control),newdata=test,type=&#39;prob&#39;)
+  aucs[i]&lt;-roc(test$Outcome~prob[,2])$auc
+}</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<pre><code>## Setting levels: control = 0, case = 1</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<p>위에서 총 100개의 auc값을 생성했다. 이 과정에서 auc생성 관련하여, 동일 메시지가 반복 출력되어, 편의상 해당 메시지는 편집하도록 한다.</p>
+</div>
+<div id="section-2" class="section level1">
+<h1>4</h1>
+<ol start="4" style="list-style-type: decimal">
+<li>3번의 결과, 총 110개의 AUROC 값을 구할 수 있다. 이를 minsplit과 cp 값의 조합에 따라 AUROC 값으로 3차원 포물선 그래프를 생성하시오. (3D surface plot)</li>
+</ol>
+<pre class="r"><code>library(plot3D)</code></pre>
+<pre><code>## Warning: 패키지 &#39;plot3D&#39;는 R 버전 3.6.3에서 작성되었습니다</code></pre>
+<pre class="r"><code>aucsarray&lt;-array(aucs,dim=c(10,10))
+rownames(aucsarray)&lt;-minsplit;colnames(aucsarray)&lt;-cp</code></pre>
+<p>persp3D에 적용하기 위해, 해당 함수의 사용에 앞서, auc값들을 적절한 형태로 편집한다. 조합을 알기 쉽게 하기 위해 행렬 이름도 지정하도록 한다.</p>
+<pre class="r"><code>persp3D(cp,minsplit,aucsarray,theta=-45,phi=35,
+      border=&#39;black&#39;,facets=T, colkey=T,
+      bty=&#39;b2&#39;,ticktype=&#39;detailed&#39;,
+      main=&#39;AUROC 3D Surface plot&#39;)</code></pre>
+<p><img src="/post/Decision_Tree_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+그래프의 진홍색 부분은 가장 큰 aucroc값들을 의미한다. 이부분이 평평하게 넓으므로, 최대 auroc값이 유일하지 않으며, 여러 개 존재하는 것으로 예상된다.</p>
+</div>
+<div id="section-3" class="section level1">
+<h1>5</h1>
+<ol start="5" style="list-style-type: decimal">
+<li>4번의 결과에서 예측정확도가 가장 높은 최적의 hyper-parameter 조합은 무엇인지 밝히시오.</li>
+</ol>
+<pre class="r"><code>which(aucsarray==max(aucsarray),arr.ind=T)</code></pre>
+<pre><code>##    row col
+## 31   7   1
+## 36   8   1
+## 41   9   1
+## 31   7   2
+## 36   8   2
+## 41   9   2
+## 31   7   3
+## 36   8   3
+## 41   9   3
+## 31   7   4
+## 36   8   4
+## 41   9   4
+## 31   7   5
+## 36   8   5
+## 41   9   5
+## 31   7   6
+## 36   8   6
+## 41   9   6
+## 31   7   7
+## 36   8   7
+## 41   9   7
+## 31   7   8
+## 36   8   8
+## 41   9   8
+## 31   7   9
+## 36   8   9
+## 41   9   9
+## 31   7  10
+## 36   8  10
+## 41   9  10</code></pre>
+<pre class="r"><code>length(which(aucsarray==max(aucsarray),arr.ind=T))</code></pre>
+<pre><code>## [1] 60</code></pre>
+<pre class="r"><code>max(aucsarray)</code></pre>
+<pre><code>## [1] 0.79565</code></pre>
+<p>위의 조합이 가장 예측정확도가 높다. 최대예측정확도는 0.79565로 총 60개의 조합이 해당값을 가진다.
+예측정확도는 열과 상관없이 7,8,9행이면 최댓값을 가지는 것을 알 수 있다. 다시말해, minsplit과 무관하게 cp가 0.007, 0.008, 0.009일 때 최대예측정확도를 갖으며, 0.01이되면 오히려 떨어지는 것을 알 수 있다.</p>
+</div>

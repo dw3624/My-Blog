@@ -1,0 +1,203 @@
+---
+title: "Step-Model"
+author: "강동원"
+date: 2020-04-27
+categories: ["R"]
+tags: ["R Markdown", "step model"]
+---
+
+
+
+<div id="section" class="section level2">
+<h2>1</h2>
+<p>First divide the data into two pieces using 50:50 proportion: one for
+training and the other for test. (Use the last four digit of your ID as the
+seed number and use 50:50 proportion)</p>
+<pre class="r"><code>mail&lt;-read.csv(&#39;data/directmail.csv&#39;)
+mail&lt;-na.omit(mail)
+table(is.na(mail))</code></pre>
+<pre><code>## 
+## FALSE 
+## 87543</code></pre>
+<pre class="r"><code>nobs=nrow(mail)
+set.seed(2059)
+i=sample(1:nobs, round(nobs*0.5))
+train=mail[i,]
+test=mail[-i,]
+nrow(train);nrow(test)</code></pre>
+<pre><code>## [1] 4864</code></pre>
+<pre><code>## [1] 4863</code></pre>
+</div>
+<div id="section-1" class="section level2">
+<h2>2</h2>
+<p>Fit the (1) Full Logistic Regression, (2) Stepwise Logistic Regression.</p>
+<pre class="r"><code>str(train)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    4864 obs. of  9 variables:
+##  $ RESPOND: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ AGE    : int  47 45 48 54 45 47 28 52 40 48 ...
+##  $ BUY18  : int  0 1 1 0 1 0 1 0 2 0 ...
+##  $ CLIMATE: int  20 30 20 20 30 20 30 10 20 30 ...
+##  $ FICO   : int  692 723 677 711 694 679 682 722 710 699 ...
+##  $ INCOME : int  68 19 30 28 85 68 17 54 84 49 ...
+##  $ MARRIED: int  1 1 1 1 0 0 0 1 1 1 ...
+##  $ OWNHOME: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ GENDER : Factor w/ 3 levels &quot;&quot;,&quot;F&quot;,&quot;M&quot;: 2 3 3 3 2 3 3 2 3 3 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int  10 39 49 54 63 86 126 139 170 192 ...
+##   ..- attr(*, &quot;names&quot;)= chr  &quot;10&quot; &quot;39&quot; &quot;49&quot; &quot;54&quot; ...</code></pre>
+<pre class="r"><code>full_model&lt;-glm(RESPOND~AGE+BUY18+CLIMATE+FICO+INCOME+MARRIED+OWNHOME+GENDER,family=&#39;binomial&#39;,data=train)
+step_model&lt;-step(full_model, direction=&#39;both&#39;)</code></pre>
+<pre><code>## Start:  AIC=2477.68
+## RESPOND ~ AGE + BUY18 + CLIMATE + FICO + INCOME + MARRIED + OWNHOME + 
+##     GENDER
+## 
+##           Df Deviance    AIC
+## - INCOME   1   2459.7 2475.7
+## - GENDER   1   2460.5 2476.5
+## &lt;none&gt;         2459.7 2477.7
+## - OWNHOME  1   2465.5 2481.5
+## - CLIMATE  1   2469.0 2485.0
+## - MARRIED  1   2470.0 2486.0
+## - FICO     1   2472.0 2488.0
+## - AGE      1   2482.0 2498.0
+## - BUY18    1   2491.0 2507.0
+## 
+## Step:  AIC=2475.69
+## RESPOND ~ AGE + BUY18 + CLIMATE + FICO + MARRIED + OWNHOME + 
+##     GENDER
+## 
+##           Df Deviance    AIC
+## - GENDER   1   2460.5 2474.5
+## &lt;none&gt;         2459.7 2475.7
+## + INCOME   1   2459.7 2477.7
+## - OWNHOME  1   2465.5 2479.5
+## - CLIMATE  1   2469.1 2483.1
+## - MARRIED  1   2470.1 2484.1
+## - FICO     1   2472.1 2486.1
+## - AGE      1   2482.0 2496.0
+## - BUY18    1   2491.0 2505.0
+## 
+## Step:  AIC=2474.46
+## RESPOND ~ AGE + BUY18 + CLIMATE + FICO + MARRIED + OWNHOME
+## 
+##           Df Deviance    AIC
+## &lt;none&gt;         2460.5 2474.5
+## + GENDER   1   2459.7 2475.7
+## + INCOME   1   2460.5 2476.5
+## - OWNHOME  1   2466.3 2478.3
+## - CLIMATE  1   2469.6 2481.6
+## - MARRIED  1   2470.9 2482.9
+## - FICO     1   2472.7 2484.7
+## - AGE      1   2482.8 2494.8
+## - BUY18    1   2491.7 2503.7</code></pre>
+<pre class="r"><code>prob_pred1&lt;-predict(full_model,newdata=test,type=&#39;response&#39;)
+prob_pred2&lt;-predict(step_model,newdata=test,type=&#39;response&#39;)
+y_pred1&lt;-as.numeric(prob_pred1&gt;0.075)
+y_pred2&lt;-as.numeric(prob_pred2&gt;0.075)</code></pre>
+</div>
+<div id="section-2" class="section level2">
+<h2>3</h2>
+<p>Draw a (non-cumulative) Lift Chart using R for the test data (use %
+Response as the Y-axis). (Do not use R packages)</p>
+<pre class="r"><code>#Full-model
+scored1&lt;-cbind(prob_pred1,test$RESPOND)
+order_sc1&lt;-as.data.frame(scored1[order(-prob_pred1),])
+colnames(order_sc1)[2]&lt;-&#39;respond&#39;
+n&lt;-round(nrow(order_sc1)/10)
+lvp1=c()
+for(i in 1:10){
+  n1&lt;-1+n*(i-1);n2&lt;-n*i
+  lv&lt;-order_sc1[n1:n2,]
+  lvpercent&lt;-length(which(lv$respond==1))/nrow(lv)*100
+  lvp1[i]&lt;-lvpercent
+  assign(paste0(&#39;lv1_&#39;,i),lv)
+}
+plot(lvp1,type=&#39;o&#39;,main=&#39;Non-Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;Response (%)&#39;)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#Step-model
+scored2&lt;-cbind(prob_pred2,test$RESPOND)
+order_sc2&lt;-as.data.frame(scored2[order(-prob_pred2),])
+colnames(order_sc2)[2]&lt;-&#39;respond&#39;
+n&lt;-round(nrow(order_sc2)/10)
+lvp2=c()
+for(i in 1:10){
+  n1&lt;-1+n*(i-1);n2&lt;-n*i
+  lv&lt;-order_sc2[n1:n2,]
+  lvpercent&lt;-length(which(lv$respond==1))/nrow(lv)*100
+  lvp2[i]&lt;-lvpercent
+  assign(paste0(&#39;lv2_&#39;,i),lv)
+}
+plot(lvp2,type=&#39;o&#39;,main=&#39;Non-Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;Response (%)&#39;)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+<div id="section-3" class="section level2">
+<h2>4</h2>
+<p>Draw a (cumulative) Lift Chart using R for the test data (use %
+Captured Response as the Y-axis). (Do not use R packages)</p>
+<pre class="r"><code>#Full-model
+lvp1c=c()
+lv1&lt;-list()
+for(i in 1:10){
+  n1&lt;-1+n*(i-1);n2&lt;-n*i
+  lv&lt;-order_sc1[1:n2,]
+  lvpercent&lt;-length(which(lv$respond==1))/length(which(order_sc1$respond==1))
+  lvp1c[i]&lt;-lvpercent
+  lv1[i]&lt;-list(order_sc1[n1:n2,])
+}
+plot(lvp1c,type=&#39;o&#39;,main=&#39;Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;Response (%)&#39;)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>#Step-model
+lvp2c=c()
+lv2&lt;-list()
+for(i in 1:10){
+  n1&lt;-1+n*(i-1);n2&lt;-n*i
+  lv&lt;-order_sc2[1:n2,]
+  lvpercent&lt;-length(which(lv$respond==1))/length(which(order_sc2$respond==1))
+  lvp2c[i]&lt;-lvpercent
+  lv2[i]&lt;-list(order_sc2[n1:n2,])
+}
+plot(lvp2c,type=&#39;o&#39;,main=&#39;Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;% Captured Response&#39;)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="section-4" class="section level2">
+<h2>5</h2>
+<p>Which model would you choose?</p>
+<pre class="r"><code>num=1:10
+par(mfrow=c(1,2))
+plot(lvp1,type=&#39;o&#39;,main=&#39;Non-Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;Response (%)&#39;)
+lines(lvp2,col=2)
+abline(lm(lvp1~num))
+abline(lm(lvp2~num),col=2)
+legend(&#39;topright&#39;,c(&#39;Full-model&#39;,&#39;Step-model&#39;),col=c(1,2),lwd=2)
+plot(lvp1c,type=&#39;o&#39;,main=&#39;Cumulative Lift Chart&#39;,xlab=&#39;Decile&#39;,ylab=&#39;% Captured Response&#39;)
+lines(lvp2c,col=2)
+abline(lm(lvp1c~num))
+abline(lm(lvp2c~num),col=2)
+legend(&#39;bottomright&#39;,c(&#39;Full-model&#39;,&#39;Step-model&#39;),col=c(1,2),lwd=2)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+abline의 기울기가 거의 비슷하다. Decile 1~2구간에서는 Step-Model의 기울기가 더 크므로, 해당 모델을 선택하도록 한다.</p>
+</div>
+<div id="section-5" class="section level2">
+<h2>6</h2>
+<p>Using the model that you chose in #5, draw a (cumulative) Profit Chart
+using R for the validation data under the following conditions.
+Fixed cost = $5,000
+Cost per mailing = $7
+Profit for each purchase = $100
+NOTE: Calculate profits for the company (not for a person).</p>
+<pre class="r"><code>profit&lt;-c()
+for(i in 1:10){
+  n1&lt;-1+n*(i-1);n2&lt;-n*i
+  lv&lt;-order_sc2[1:n2,]
+  income&lt;-length(which(lv$respond==1))*100
+  cost&lt;-5000+7*nrow(lv)
+  profit[i]&lt;-income-cost
+}
+plot(profit,type=&#39;o&#39;,main=&#39;Cumulative Profit Chart&#39;)</code></pre>
+<p><img src="/post/Step_Model_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="section-6" class="section level2">
+<h2>7</h2>
+<p>Suggest the proportion of ‘likely-to-buy’ customers to mail out the
+mailings, using the result in #6.</p>
+<p>Decile 1 부터 증가하고 4에서 Response가 최대가 되므로 decile 4까지를 대상으로 하는 것이 적절하다.</p>
+</div>

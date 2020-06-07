@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>decision tree on A Hugo website</title>
+    <link>/tags/decision-tree/</link>
+    <description>Recent content in decision tree on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/decision-tree/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Decision Tree</title>
+      <link>/2020/05/18/decision-tree/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/18/decision-tree/</guid>
+      <description>진행하기에 앞서 데이터의 정보를 확인한다.
+data&amp;lt;-read.csv(&amp;quot;data/diabetes.csv&amp;quot;)table(data$Outcome)## ## 0 1 ## 500 268summary(data);str(data)## Pregnancies Glucose BloodPressure SkinThickness ## Min. : 0.000 Min. : 0.0 Min. : 0.00 Min. : 0.00 ## 1st Qu.: 1.000 1st Qu.: 99.0 1st Qu.: 62.00 1st Qu.: 0.00 ## Median : 3.000 Median :117.0 Median : 72.00 Median :23.00 ## Mean : 3.845 Mean :120.9 Mean : 69.11 Mean :20.54 ## 3rd Qu.</description>
+    </item>
+    
+  </channel>
+</rss>

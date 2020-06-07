@@ -6,33 +6,60 @@
     <description>Recent content in Tags on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>plot</title>
-      <link>/tags/plot/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>neural network</title>
+      <link>/tags/neural-network/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/plot/</guid>
+      <guid>/tags/neural-network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R Markdown</title>
       <link>/tags/r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/r-markdown/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>decision tree</title>
+      <link>/tags/decision-tree/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/decision-tree/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>step model</title>
+      <link>/tags/step-model/</link>
+      <pubDate>Mon, 27 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/step-model/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linear</title>
+      <link>/tags/linear/</link>
+      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linear/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>regression</title>
       <link>/tags/regression/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/regression/</guid>
       <description></description>

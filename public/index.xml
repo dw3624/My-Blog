@@ -6,19 +6,50 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Dec 2016 21:49:57 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>A Plain Markdown Post</title>
-      <link>/2016/12/30/a-plain-markdown-post/</link>
-      <pubDate>Fri, 30 Dec 2016 21:49:57 -0700</pubDate>
+      <title>Neural Network</title>
+      <link>/2020/05/27/neural-network/</link>
+      <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2016/12/30/a-plain-markdown-post/</guid>
-      <description>This is a post written in plain Markdown (*.md) instead of R Markdown (*.Rmd). The major differences are:
- You cannot run any R code in a plain Markdown document, whereas in an R Markdown document, you can embed R code chunks (```{r}); A plain Markdown post is rendered through Blackfriday, and an R Markdown document is compiled by rmarkdown and Pandoc.  There are many differences in syntax between Blackfriday&amp;rsquo;s Markdown and Pandoc&amp;rsquo;s Markdown.</description>
+      <guid>/2020/05/27/neural-network/</guid>
+      <description>진행하기에 앞서 데이터의 정보를 확인한다.
+data&amp;lt;-read.csv(&amp;quot;data/nasa.csv&amp;quot;)summary(data);str(data)## Neo.Reference.ID Name Absolute.Magnitude Est.Dia.in.KM.min. ## Min. :2000433 Min. :2000433 Min. :11.16 Min. : 0.001011 ## 1st Qu.:3097594 1st Qu.:3097594 1st Qu.:20.10 1st Qu.: 0.033462 ## Median :3514799 Median :3514799 Median :21.90 Median : 0.110804 ## Mean :3272298 Mean :3272298 Mean :22.27 Mean : 0.204604 ## 3rd Qu.:3690060 3rd Qu.:3690060 3rd Qu.:24.50 3rd Qu.: 0.253837 ## Max. :3781897 Max. :3781897 Max. :32.10 Max.</description>
+    </item>
+    
+    <item>
+      <title>Decision Tree</title>
+      <link>/2020/05/18/decision-tree/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/18/decision-tree/</guid>
+      <description>진행하기에 앞서 데이터의 정보를 확인한다.
+data&amp;lt;-read.csv(&amp;quot;data/diabetes.csv&amp;quot;)table(data$Outcome)## ## 0 1 ## 500 268summary(data);str(data)## Pregnancies Glucose BloodPressure SkinThickness ## Min. : 0.000 Min. : 0.0 Min. : 0.00 Min. : 0.00 ## 1st Qu.: 1.000 1st Qu.: 99.0 1st Qu.: 62.00 1st Qu.: 0.00 ## Median : 3.000 Median :117.0 Median : 72.00 Median :23.00 ## Mean : 3.845 Mean :120.9 Mean : 69.11 Mean :20.54 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title>Step-Model</title>
+      <link>/2020/04/27/step-model/</link>
+      <pubDate>Mon, 27 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/27/step-model/</guid>
+      <description>1First divide the data into two pieces using 50:50 proportion: one fortraining and the other for test. (Use the last four digit of your ID as theseed number and use 50:50 proportion)
+mail&amp;lt;-read.csv(&amp;#39;data/directmail.csv&amp;#39;)mail&amp;lt;-na.omit(mail)table(is.na(mail))## ## FALSE ## 87543nobs=nrow(mail)set.seed(2059)i=sample(1:nobs, round(nobs*0.5))train=mail[i,]test=mail[-i,]nrow(train);nrow(test)## [1] 4864## [1] 48632Fit the (1) Full Logistic Regression, (2) Stepwise Logistic Regression.
+str(train)## &amp;#39;data.</description>
+    </item>
+    
+    <item>
+      <title>Linear Regression</title>
+      <link>/2020/04/06/linear-regression/</link>
+      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/06/linear-regression/</guid>
+      <description>변수 검토먼저 이후의 작업상의 편의를 위해 디렉토리를 지정, 패키지를 불러온다. names()로 변수명을 확인하고 추가적으로 str()나 summary()등을 이용해 전체 데이터에 대해 파악한다.
+library(&amp;#39;readxl&amp;#39;)## Warning: 패키지 &amp;#39;readxl&amp;#39;는 R 버전 3.6.3에서 작성되었습니다airbnb&amp;lt;-read_excel(&amp;#39;data/airbnb.xlsx&amp;#39;)air&amp;lt;-airbnbnames(air)## [1] &amp;quot;id&amp;quot; &amp;quot;log_price&amp;quot; &amp;quot;property_type&amp;quot; ## [4] &amp;quot;room_type&amp;quot; &amp;quot;amenities&amp;quot; &amp;quot;accommodates&amp;quot; ## [7] &amp;quot;bathrooms&amp;quot; &amp;quot;bed_type&amp;quot; &amp;quot;cancellation_policy&amp;quot; ## [10] &amp;quot;cleaning_fee&amp;quot; &amp;quot;city&amp;quot; &amp;quot;description&amp;quot; ## [13] &amp;quot;first_review&amp;quot; &amp;quot;host_has_profile_pic&amp;quot; &amp;quot;host_identity_verified&amp;quot;## [16] &amp;quot;host_response_rate&amp;quot; &amp;quot;host_since&amp;quot; &amp;quot;instant_bookable&amp;quot; ## [19] &amp;quot;last_review&amp;quot; &amp;quot;latitude&amp;quot; &amp;quot;longitude&amp;quot; ## [22] &amp;quot;name&amp;quot; &amp;quot;neighbourhood&amp;quot; &amp;quot;number_of_reviews&amp;quot; ## [25] &amp;quot;review_scores_rating&amp;quot; &amp;quot;thumbnail_url&amp;quot; &amp;quot;zipcode&amp;quot; ## [28] &amp;quot;bedrooms&amp;quot; &amp;quot;beds&amp;quot;“property_type”은 ‘House’, ‘Aprtment’, ’Other’ 등의 3범주로 변환하시오.</description>
     </item>
     
     <item>
@@ -28,26 +59,6 @@
       
       <guid>/about/</guid>
       <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/2015/07/23/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>Lorem Ipsum</title>
-      <link>/2015/01/01/lorem-ipsum/</link>
-      <pubDate>Thu, 01 Jan 2015 13:09:13 -0600</pubDate>
-      
-      <guid>/2015/01/01/lorem-ipsum/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
     </item>
     
   </channel>

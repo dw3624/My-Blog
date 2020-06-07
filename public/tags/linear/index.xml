@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linear on A Hugo website</title>
+    <link>/tags/linear/</link>
+    <description>Recent content in linear on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/linear/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linear Regression</title>
+      <link>/2020/04/06/linear-regression/</link>
+      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/06/linear-regression/</guid>
+      <description>변수 검토먼저 이후의 작업상의 편의를 위해 디렉토리를 지정, 패키지를 불러온다. names()로 변수명을 확인하고 추가적으로 str()나 summary()등을 이용해 전체 데이터에 대해 파악한다.
+library(&amp;#39;readxl&amp;#39;)## Warning: 패키지 &amp;#39;readxl&amp;#39;는 R 버전 3.6.3에서 작성되었습니다airbnb&amp;lt;-read_excel(&amp;#39;data/airbnb.xlsx&amp;#39;)air&amp;lt;-airbnbnames(air)## [1] &amp;quot;id&amp;quot; &amp;quot;log_price&amp;quot; &amp;quot;property_type&amp;quot; ## [4] &amp;quot;room_type&amp;quot; &amp;quot;amenities&amp;quot; &amp;quot;accommodates&amp;quot; ## [7] &amp;quot;bathrooms&amp;quot; &amp;quot;bed_type&amp;quot; &amp;quot;cancellation_policy&amp;quot; ## [10] &amp;quot;cleaning_fee&amp;quot; &amp;quot;city&amp;quot; &amp;quot;description&amp;quot; ## [13] &amp;quot;first_review&amp;quot; &amp;quot;host_has_profile_pic&amp;quot; &amp;quot;host_identity_verified&amp;quot;## [16] &amp;quot;host_response_rate&amp;quot; &amp;quot;host_since&amp;quot; &amp;quot;instant_bookable&amp;quot; ## [19] &amp;quot;last_review&amp;quot; &amp;quot;latitude&amp;quot; &amp;quot;longitude&amp;quot; ## [22] &amp;quot;name&amp;quot; &amp;quot;neighbourhood&amp;quot; &amp;quot;number_of_reviews&amp;quot; ## [25] &amp;quot;review_scores_rating&amp;quot; &amp;quot;thumbnail_url&amp;quot; &amp;quot;zipcode&amp;quot; ## [28] &amp;quot;bedrooms&amp;quot; &amp;quot;beds&amp;quot;“property_type”은 ‘House’, ‘Aprtment’, ’Other’ 등의 3범주로 변환하시오.</description>
+    </item>
+    
+  </channel>
+</rss>
