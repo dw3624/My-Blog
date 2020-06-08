@@ -1,22 +1,19 @@
 ---
-date: "2020-06-08T00:00:00-09:00"
 title: Resume
 ---
 
-Portfolio
-=============
-About me
+## About me
 -------------
-* Name: Dongwon Kang
-* E-mail: dw3624a@gmail.com
+* Name: 강동원 Dongwon Kang
+* E-mail: dw3624@gmail.com
 * Dev. Tool : R, Python
 * Applied Statistics in Yonsei. Univ, Seoul, Korea
 
 
-Study and Project
+## Study and Project
 -------------
 
-### _주간 음원차트 예측_
+### 주간 음원차트 예측
 `Python`, `R`, `Machine Learning`
 
 [Github Link](https://github.com/YooGunWook/1nurse4stat)
@@ -27,7 +24,7 @@ Study and Project
 
 
 
-Courses
+## Courses
 -------------
 현재까지 수강한 과목 리스트입니다.
 

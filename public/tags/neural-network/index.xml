@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>neural network on A Hugo website</title>
+    <title>neural network on a Blog</title>
     <link>/tags/neural-network/</link>
-    <description>Recent content in neural network on A Hugo website</description>
+    <description>Recent content in neural network on a Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
@@ -13,12 +13,12 @@
     
     <item>
       <title>Neural Network</title>
-      <link>/2020/05/27/neural-network/</link>
+      <link>/post/neural_network/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/05/27/neural-network/</guid>
+      <guid>/post/neural_network/</guid>
       <description>진행하기에 앞서 데이터의 정보를 확인한다.
-data&amp;lt;-read.csv(&amp;quot;data/nasa.csv&amp;quot;)summary(data);str(data)## Neo.Reference.ID Name Absolute.Magnitude Est.Dia.in.KM.min. ## Min. :2000433 Min. :2000433 Min. :11.16 Min. : 0.001011 ## 1st Qu.:3097594 1st Qu.:3097594 1st Qu.:20.10 1st Qu.: 0.033462 ## Median :3514799 Median :3514799 Median :21.90 Median : 0.110804 ## Mean :3272298 Mean :3272298 Mean :22.27 Mean : 0.204604 ## 3rd Qu.:3690060 3rd Qu.:3690060 3rd Qu.:24.50 3rd Qu.: 0.253837 ## Max. :3781897 Max. :3781897 Max. :32.10 Max.</description>
+data&amp;lt;-read.csv(&amp;quot;data/nasa.csv&amp;quot;)summary(data);str(data)## Neo.Reference.ID Name Absolute.Magnitude Est.Dia.in.KM.min. ## Min. :2000433 Min. :2000433 Min. :11.16 Min. : 0.001011 ## 1st Qu.:3097594 1st Qu.:3097594 1st Qu.:20.10 1st Qu.</description>
     </item>
     
   </channel>

@@ -1,76 +1,188 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="generator" content="Hugo 0.72.0" />
 
-
-<title>Neural Network - A Hugo website</title>
-<meta property="og:title" content="Neural Network - A Hugo website">
-
-
-  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
-
-
-
-  
-
-
-
-
-
-
-
-
-<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
-
-
-
-<link rel="stylesheet" href="/css/fonts.css" media="all">
-<link rel="stylesheet" href="/css/main.css" media="all">
-
-
-
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <nav class="nav">
-  <a href="/" class="nav-logo">
-    <img src="/images/logo.png"
-         width="50"
-         height="50"
-         alt="Logo">
-  </a>
-
-  <ul class="nav-links">
     
-    <li><a href="/about/">About</a></li>
     
-    <li><a href="https://github.com/dw3624/My-Blog">GitHub</a></li>
-    
-  </ul>
-</nav>
-
-      </header>
-
-
-<main class="content" role="main">
-
-  <article class="article">
-    
-    <span class="article-duration">16 min read</span>
     
 
-    <h1 class="article-title">Neural Network</h1>
+<title>Neural Network • A Blog</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Neural Network"/>
+<meta name="twitter:description" content="진행하기에 앞서 데이터의 정보를 확인한다.
+data&lt;-read.csv(&quot;data/nasa.csv&quot;)summary(data);str(data)## Neo.Reference.ID Name Absolute.Magnitude Est.Dia.in.KM.min. ## Min. :2000433 Min. :2000433 Min. :11.16 Min. : 0.001011 ## 1st Qu.:3097594 1st Qu.:3097594 1st Qu.:20.10 1st Qu.: 0.033462 ## Median :3514799 Median :3514799 Median :21.90 Median : 0.110804 ## Mean :3272298 Mean :3272298 Mean :22.27 Mean : 0.204604 ## 3rd Qu.:3690060 3rd Qu.:3690060 3rd Qu.:24.50 3rd Qu.: 0.253837 ## Max. :3781897 Max. :3781897 Max. :32.10 Max."/>
+
+<meta property="og:title" content="Neural Network" />
+<meta property="og:description" content="진행하기에 앞서 데이터의 정보를 확인한다.
+data&lt;-read.csv(&quot;data/nasa.csv&quot;)summary(data);str(data)## Neo.Reference.ID Name Absolute.Magnitude Est.Dia.in.KM.min. ## Min. :2000433 Min. :2000433 Min. :11.16 Min. : 0.001011 ## 1st Qu.:3097594 1st Qu.:3097594 1st Qu.:20.10 1st Qu.: 0.033462 ## Median :3514799 Median :3514799 Median :21.90 Median : 0.110804 ## Mean :3272298 Mean :3272298 Mean :22.27 Mean : 0.204604 ## 3rd Qu.:3690060 3rd Qu.:3690060 3rd Qu.:24.50 3rd Qu.: 0.253837 ## Max. :3781897 Max. :3781897 Max. :32.10 Max." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/05/27/neural-network/" />
+<meta property="article:published_time" content="2020-05-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-27T00:00:00+00:00" />
+
 
     
-    <span class="article-date">2020-05-27</span>
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css" integrity="sha256-MIHEmB&#43;2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
     
 
-    <div class="article-content">
+</head>
+
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="/">A Blog</a>
+      </span>
       
+      
+      <p class="site__description">
+         dw3624 data science blog 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">A Blog</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="https://github.com/dw3624/My-Blog">
+						<span>GitHub</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	
+	
+	<a href="https://github.com/https://github.com/dw3624/My-Blog" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Neural Network</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> May 27, 2020
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="/categories/r">R</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/r-markdown">r markdown</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/neural-network">neural network</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 16 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    
 
 
 <p>진행하기에 앞서 데이터의 정보를 확인한다.</p>
@@ -623,46 +735,41 @@ for(i in 1:3){
 따라서, 예측정확도가 가장 높은 조합은 3개의 은닉층과 3개의 은닉노드임을 확인할 수 있다.</p>
 </div>
 
-    </div>
-  </article>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/2020/05/18/decision-tree/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Decision Tree</span>
+    </a>
+    
+    
+</div>
+
 
   
 
+  
+    
 
-</main>
 
-      <footer class="footer">
-        <ul class="footer-links">
-          <li>
-            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
-          </li>
-          <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
-          </li>
-        </ul>
-      </footer>
+</article>
 
-    </div>
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" integrity="sha384-b3ua1l97aVGAPEIe48b4TC60WUQbQaGi2jqAWM90y0OZXZeyaTCWtBTKtjW2GXG1" crossorigin="anonymous"></script>
+
+
+
+
     
 
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-
-
-
-    
-<script src="/js/math-code.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-
-    
-  </body>
+    </body>
 </html>
-

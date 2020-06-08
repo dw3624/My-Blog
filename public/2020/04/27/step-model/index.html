@@ -1,76 +1,190 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
     <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Cache-Control" content="public" />
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="generator" content="Hugo 0.72.0" />
 
-
-<title>Step-Model - A Hugo website</title>
-<meta property="og:title" content="Step-Model - A Hugo website">
-
-
-  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
-
-
-
-  
-
-
-
-
-
-
-
-
-<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
-
-
-
-<link rel="stylesheet" href="/css/fonts.css" media="all">
-<link rel="stylesheet" href="/css/main.css" media="all">
-
-
-
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="header">
-        <nav class="nav">
-  <a href="/" class="nav-logo">
-    <img src="/images/logo.png"
-         width="50"
-         height="50"
-         alt="Logo">
-  </a>
-
-  <ul class="nav-links">
     
-    <li><a href="/about/">About</a></li>
     
-    <li><a href="https://github.com/dw3624/My-Blog">GitHub</a></li>
-    
-  </ul>
-</nav>
-
-      </header>
-
-
-<main class="content" role="main">
-
-  <article class="article">
-    
-    <span class="article-duration">4 min read</span>
     
 
-    <h1 class="article-title">Step-Model</h1>
+<title>Step-Model • A Blog</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Step-Model"/>
+<meta name="twitter:description" content="1First divide the data into two pieces using 50:50 proportion: one fortraining and the other for test. (Use the last four digit of your ID as theseed number and use 50:50 proportion)
+mail&lt;-read.csv(&#39;data/directmail.csv&#39;)mail&lt;-na.omit(mail)table(is.na(mail))## ## FALSE ## 87543nobs=nrow(mail)set.seed(2059)i=sample(1:nobs, round(nobs*0.5))train=mail[i,]test=mail[-i,]nrow(train);nrow(test)## [1] 4864## [1] 48632Fit the (1) Full Logistic Regression, (2) Stepwise Logistic Regression.
+str(train)## &#39;data."/>
+
+<meta property="og:title" content="Step-Model" />
+<meta property="og:description" content="1First divide the data into two pieces using 50:50 proportion: one fortraining and the other for test. (Use the last four digit of your ID as theseed number and use 50:50 proportion)
+mail&lt;-read.csv(&#39;data/directmail.csv&#39;)mail&lt;-na.omit(mail)table(is.na(mail))## ## FALSE ## 87543nobs=nrow(mail)set.seed(2059)i=sample(1:nobs, round(nobs*0.5))train=mail[i,]test=mail[-i,]nrow(train);nrow(test)## [1] 4864## [1] 48632Fit the (1) Full Logistic Regression, (2) Stepwise Logistic Regression.
+str(train)## &#39;data." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/04/27/step-model/" />
+<meta property="article:published_time" content="2020-04-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-04-27T00:00:00+00:00" />
+
 
     
-    <span class="article-date">2020-04-27</span>
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.3081c4981fb69a2783dd36ecfdd0e6ba7a158d4cbfdd290ebce8f78ba0469fc6.css" integrity="sha256-MIHEmB&#43;2mieD3Tbs/dDmunoVjUy/3SkOvOj3i6BGn8Y=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
     
 
-    <div class="article-content">
+</head>
+
+
+    <body class=" ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="/">A Blog</a>
+      </span>
       
+      
+      <p class="site__description">
+         dw3624 data science blog 
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">A Blog</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="https://github.com/dw3624/My-Blog">
+						<span>GitHub</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	
+	
+	<a href="https://github.com/https://github.com/dw3624/My-Blog" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Step-Model</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Apr 27, 2020
+    
+    
+    
+      
+      
+          in
+          
+          
+              <a class="badge badge-category" href="/categories/r">R</a>
+              
+          
+      
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/r-markdown">r markdown</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/step-model">step model</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 4 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    
 
 
 <div id="section" class="section level2">
@@ -267,46 +381,46 @@ mailings, using the result in #6.</p>
 <p>Decile 1 부터 증가하고 4에서 Response가 최대가 되므로 decile 4까지를 대상으로 하는 것이 적절하다.</p>
 </div>
 
-    </div>
-  </article>
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/2020/04/06/linear-regression/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Linear Regression</span>
+    </a>
+    
+    
+    <a href="/2020/05/18/decision-tree/" class="navigation-next">
+      <span class="navigation-tittle">Decision Tree</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
+
 
   
 
+  
+    
 
-</main>
 
-      <footer class="footer">
-        <ul class="footer-links">
-          <li>
-            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
-          </li>
-          <li>
-            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
-          </li>
-        </ul>
-      </footer>
+</article>
 
-    </div>
+
+        </div>
+        
+    
+
+<script defer src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" integrity="sha384-b3ua1l97aVGAPEIe48b4TC60WUQbQaGi2jqAWM90y0OZXZeyaTCWtBTKtjW2GXG1" crossorigin="anonymous"></script>
+
+
+
+
     
 
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-
-
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
-
-
-
-    
-<script src="/js/math-code.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-
-    
-  </body>
+    </body>
 </html>
-

@@ -1,39 +1,69 @@
+## Basic Configuration
 baseurl = "/"
 languageCode = "en-us"
-title = "A Hugo website"
-theme = "hugo-lithium"
-googleAnalytics = ""
+
+title = "a Blog"
+theme = "hyde-hyde"
+
+## Hugo Built-in Features
 disqusShortname = ""
+googleAnalytics = ""
+# enableRobotsTXT = true
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
+summarylength = 30
+paginate = 5
 
+## Site Settings
+[params]
+    author = "Dongwon Kang"
+    title = "a Blog"
+    description = "a data science blog made by hugo blogdown & netlify"
+    authorimage = "/img/zipper.png"
+    dateformat = "June 8, 2020"
+
+    # sidebar, copyright & license
+    copyright = "htr3n"
+    since = 2019
+    license = "CC BY-SA 4.0"
+    licenseURL = "https://creativecommons.org/licenses/by-sa/4.0"
+    showBuiltWith = true
+
+    # https://highlightjs.org
+    highlightjs = true
+    highlightjsstyle = "github"
+    
+    # please choose either GraphComment or Disqus or Utterances
+    #GraphCommentId = "..."
+    #UtterancesRepo = "..." # https://utteranc.es/
+    #UtterancesIssueTerm = "..." # pathname, url, title, og:title
+    #UtterancesTheme = "..." # github-light or github-dark
+
+    # Table of contents
+    #toc = none, "hugo", or "tocbot"
+
+## Social Accounts
+[params.social]
+    github = "https://github.com/dw3624/My-Blog"
+#    instagram = "<username>"
+#    xing = "<username>"
+#    linkedin = "<username>"
+#    twitter = "<username>"
+#    facebook = "<username>"
+#    stackoverflow = "<username>"
+#    telegram = "<username>"
+#    # orcid = "<xxxx-xxxx-xxxx-xxxx>"
+    email = "dw3624@gmail.com"
+    # gravatar = "your-email@example.com"
+
+## Main Menu
+[[menu.main]]
+    name = "Posts"
+    weight = 100
+    identifier = "post"
+    url = "/post/"
 [[menu.main]]
     name = "About"
+    identifier = "about"
+    weight = 300
     url = "/about/"
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/dw3624/My-Blog"
-
-[params]
-    description = "A website built through Hugo and blogdown."
-
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.12.0"
-    highlightjsCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
-
-    MathJaxCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    MathJaxVersion = "2.7.5"
-
-    # path to the favicon, under "static"
-    favicon = "favicon.ico"
-
-    [params.logo]
-    url = "logo.png"
-    width = 50
-    height = 50
-    alt = "Logo"
-
