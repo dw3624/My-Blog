@@ -1,42 +1,25 @@
-baseurl = "/"
-languageCode = "en-us"
-title = "A Hugo website"
-theme = "hugo-lithium"
-googleAnalytics = ""
-disqusShortname = ""
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+theme = "simple-blog"
+baseURL = "dw3624 Data Science Blog"
+title = "https://tejava.netlify.app/"
+copyright = "© 2020 copyright text."
+paginate = 3
+languageCode = "ko-kr"
+DefaultContentLanguage = "en-us"
+enableInlineShortcodes = true
+footnoteReturnLinkContents = "^"
 
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
+[menu]
 
-[[menu.main]]
+  [[menu.main]]
+    identifier = "about"
     name = "About"
     url = "/about/"
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/rstudio/blogdown"
-[[menu.main]]
-    name = "Twitter"
-    url = "https://twitter.com/rstudio"
+    weight = 10
+  [[menu.main]]
+     name = "GitHub"
+    url = "https://github.com/dw3624/My-Blog"
+    weight = 10
 
-[params]
-    description = "A website built through Hugo and blogdown."
-
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.12.0"
-    highlightjsCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
-
-    MathJaxCDN = "//cdnjs.cloudflare.com/ajax/libs"
-    MathJaxVersion = "2.7.5"
-
-    # path to the favicon, under "static"
-    favicon = "favicon.ico"
-
-    [params.logo]
-    url = "logo.png"
-    width = 50
-    height = 50
-    alt = "Logo"
-
+[taxonomies]
+category = "categories"
+tag = "tags"
