@@ -12,6 +12,26 @@
     
     
     <item>
+      <title>Resume</title>
+      <link>/about/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 -0900</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Portfolio About me  Name: Dongwon Kang E-mail: dw3624a@gmail.com Dev. Tool : R, Python Applied Statistics in Yonsei. Univ, Seoul, Korea  Study and Project 주간 음원차트 예측 Python, R, Machine Learning
+Github Link
+음원 데이터를 활용한 음원순위 예측 프로젝트
+Courses 현재까지 수강한 과목 리스트입니다.
+  미분적분학
+  선형대수
+  통계학 입문
+  통계방법론
+  회귀 분석
+  시계열분석
+  금융리스크관리실무와통계학
+  수리통계학(1)</description>
+    </item>
+    
+    <item>
       <title>Neural Network</title>
       <link>/2020/05/27/neural-network/</link>
       <pubDate>Wed, 27 May 2020 00:00:00 +0000</pubDate>
@@ -50,15 +70,6 @@ str(train)## &amp;#39;data.</description>
       <guid>/2020/04/06/linear-regression/</guid>
       <description>변수 검토먼저 이후의 작업상의 편의를 위해 디렉토리를 지정, 패키지를 불러온다. names()로 변수명을 확인하고 추가적으로 str()나 summary()등을 이용해 전체 데이터에 대해 파악한다.
 library(&amp;#39;readxl&amp;#39;)## Warning: 패키지 &amp;#39;readxl&amp;#39;는 R 버전 3.6.3에서 작성되었습니다airbnb&amp;lt;-read_excel(&amp;#39;data/airbnb.xlsx&amp;#39;)air&amp;lt;-airbnbnames(air)## [1] &amp;quot;id&amp;quot; &amp;quot;log_price&amp;quot; &amp;quot;property_type&amp;quot; ## [4] &amp;quot;room_type&amp;quot; &amp;quot;amenities&amp;quot; &amp;quot;accommodates&amp;quot; ## [7] &amp;quot;bathrooms&amp;quot; &amp;quot;bed_type&amp;quot; &amp;quot;cancellation_policy&amp;quot; ## [10] &amp;quot;cleaning_fee&amp;quot; &amp;quot;city&amp;quot; &amp;quot;description&amp;quot; ## [13] &amp;quot;first_review&amp;quot; &amp;quot;host_has_profile_pic&amp;quot; &amp;quot;host_identity_verified&amp;quot;## [16] &amp;quot;host_response_rate&amp;quot; &amp;quot;host_since&amp;quot; &amp;quot;instant_bookable&amp;quot; ## [19] &amp;quot;last_review&amp;quot; &amp;quot;latitude&amp;quot; &amp;quot;longitude&amp;quot; ## [22] &amp;quot;name&amp;quot; &amp;quot;neighbourhood&amp;quot; &amp;quot;number_of_reviews&amp;quot; ## [25] &amp;quot;review_scores_rating&amp;quot; &amp;quot;thumbnail_url&amp;quot; &amp;quot;zipcode&amp;quot; ## [28] &amp;quot;bedrooms&amp;quot; &amp;quot;beds&amp;quot;“property_type”은 ‘House’, ‘Aprtment’, ’Other’ 등의 3범주로 변환하시오.</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>/about/</link>
-      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
-      
-      <guid>/about/</guid>
-      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
     </item>
     
   </channel>
