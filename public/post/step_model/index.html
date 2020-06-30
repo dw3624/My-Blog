@@ -11,20 +11,20 @@
 <meta http-equiv="Cache-Control" content="public" />
 <!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.72.0" />
+<meta name="generator" content="Hugo 0.73.0" />
 
     
     
     
 
-<title>Step-Model • a Blog</title>
+<title>Step Model • a Blog</title>
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Step-Model"/>
+<meta name="twitter:title" content="Step Model"/>
 <meta name="twitter:description" content="1First divide the data into two pieces using 50:50 proportion: one fortraining and the other for test. (Use the last four digit of your ID as theseed number and use 50:50 proportion)"/>
 
-<meta property="og:title" content="Step-Model" />
+<meta property="og:title" content="Step Model" />
 <meta property="og:description" content="1First divide the data into two pieces using 50:50 proportion: one fortraining and the other for test. (Use the last four digit of your ID as theseed number and use 50:50 proportion)" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/step_model/" />
@@ -162,13 +162,13 @@ Built with <a href="https://gohugo.io">Hugo</a> ❤️ <a href="https://github.c
     
 <article>
   <header>
-    <h1>Step-Model</h1>
+    <h1>Step Model</h1>
     
     
 <div class="post__meta">
     
     
-      <i class="fas fa-calendar-alt"></i> June 8, 27270
+      <i class="fas fa-calendar-alt"></i> Apr 27, 2020
     
     
     
@@ -242,9 +242,9 @@ nrow(train);nrow(test)</code></pre>
 ##  $ INCOME : int  68 19 30 28 85 68 17 54 84 49 ...
 ##  $ MARRIED: int  1 1 1 1 0 0 0 1 1 1 ...
 ##  $ OWNHOME: int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ GENDER : Factor w/ 3 levels &quot;&quot;,&quot;F&quot;,&quot;M&quot;: 2 3 3 3 2 3 3 2 3 3 ...
-##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int  10 39 49 54 63 86 126 139 170 192 ...
-##   ..- attr(*, &quot;names&quot;)= chr  &quot;10&quot; &quot;39&quot; &quot;49&quot; &quot;54&quot; ...</code></pre>
+##  $ GENDER : chr  &quot;F&quot; &quot;M&quot; &quot;M&quot; &quot;M&quot; ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:273] 10 39 49 54 63 86 126 139 170 192 ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:273] &quot;10&quot; &quot;39&quot; &quot;49&quot; &quot;54&quot; ...</code></pre>
 <pre class="r"><code>full_model&lt;-glm(RESPOND~AGE+BUY18+CLIMATE+FICO+INCOME+MARRIED+OWNHOME+GENDER,family=&#39;binomial&#39;,data=train)
 step_model&lt;-step(full_model, direction=&#39;both&#39;)</code></pre>
 <pre><code>## Start:  AIC=2477.68

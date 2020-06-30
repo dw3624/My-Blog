@@ -20,7 +20,7 @@ paginate = 5
     title = "a Blog"
     description = "a data science blog made by hugo blogdown & netlify"
     authorimage = "/img/zipper.png"
-    dateformat = "June 8, 2020"
+    #dateformat = "6.8.2020"
 
     # sidebar, copyright & license
     copyright = "htr3n"

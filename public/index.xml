@@ -6,10 +6,19 @@
     <description>Recent content on a Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Random Forest</title>
+      <link>/post/random_forest/</link>
+      <pubDate>Tue, 30 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/random_forest/</guid>
+      <description>random forest는 Bagging을 이용한 ensemble 기법 중 하나다. 변수의 임의추출을 통해 ensemble의 다양성을 확보한다. 즉 Bootstrap Bagging과 변수 임의추출을 조합한 기법이다.tree개수가 많아 해석보다는 예측에 중점을 둔 기법이며, regression과 classification 모두 가능하다.</description>
+    </item>
     
     <item>
       <title>Neural Network</title>
@@ -32,7 +41,7 @@ data&amp;lt;-read.csv(&amp;quot;data/diabetes.csv&amp;quot;)table(data$Outcome)
     </item>
     
     <item>
-      <title>Step-Model</title>
+      <title>Step Model</title>
       <link>/post/step_model/</link>
       <pubDate>Mon, 27 Apr 2020 00:00:00 +0000</pubDate>
       

@@ -1,5 +1,5 @@
 ---
-title: "Step-Model"
+title: "Step Model"
 author: "강동원"
 date: 2020-04-27
 categories: ["R"]

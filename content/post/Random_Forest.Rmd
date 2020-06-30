@@ -1,0 +1,105 @@
+---
+title: "Random Forest"
+author: "강동원"
+date: 2020-06-30
+categories: ["R"]
+tags: ["R Markdown", "randomforest","ensemble"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+ random forest는 Bagging을 이용한 ensemble 기법 중 하나다. 변수의 임의추출을 통해 ensemble의 다양성을 확보한다. 즉 Bootstrap Bagging과 변수 임의추출을 조합한 기법이다.
+ tree개수가 많아 해석보다는 예측에 중점을 둔 기법이며, regression과 classification 모두 가능하다. 본 포스팅에서는 classification을 진행해보도록 한다.
+
+
+```{r,include=F}
+data<-read.csv('data/examdata.csv')
+library(tidyverse)
+data<-data %>%
+  select(-Id)
+```
+\
+\
+data불러오기
+```{r}
+data$y<-as.factor(data$y)
+nrow(data)
+table(is.na(data))
+table(data$y)
+```
+총 2000개의 데이터를 사용한다. 결측치는 없으며, y변수의 개수는 위와 같다.
+\
+\
+train data, test data분할
+```{r}
+set.seed(99)
+nobs=nrow(data)
+i=sample(1:nobs,round(nobs*0.5))
+train=data[i,]
+test=data[-i,]
+nrow(train);nrow(test)
+```
+data를 train과 test data로 각 50%의 비율로 분할한다.
+\
+\
+모델작성
+```{r,message=FALSE}
+library(randomForest)
+set.seed(99)
+rf.model=randomForest(y~.,data=train,ntree=100,mtry=5,importance=T,na.action=na.omit)
+```
++ ntree : 앙상블할 tree 개수\
++ mtry : 임의추출할 변수개수 m\
+    + m값이 너무 작으면, 각 tree간 상관관계가 감소
+    + 통상 m=√p(classification), m=p/3(regression)
++ importance=T : importance값 포함\
++ na.action=na.omit : NA값 있는 경우 삭제\
+\
+\
+```{r}
+show(rf.model)
+```
+Out of Bag(OOB)오차 : 40.1%\
+OOB error rate : Bagging의 Bootstrap 복원추출 시 뽑히지 않은 데이터로 계산한 error rate
+\
+\
+```{r}
+importance(rf.model,type=1)
+varImpPlot(rf.model)
+```
+MDA(Mean Decrease Accuracy) : 관련 변수 값을 다른 값으로 대체했을 때 정확도가 감소하는 정도\
+X7의 MDA가 가장 높다. 즉 해당 변수가 변수들 중 가장 중요한 변수다.
+\
+\
+모델을 이용한 예측
+```{r}
+pred.rf.model=predict(rf.model,newdata=test)
+head(pred.rf.model,10)
+```
+\
+\
+```{r}
+tab=table(test$y,pred.rf.model,dnn=c('Actual','Predicted'))
+print(tab)
+1-sum(diag(tab))/sum(tab)
+plot(rf.model)
+```
+green : '1' class error\
+black : Overall OOB error\
+red : '0' class error\
+\
+\
+각 error는 아래와 같은 방법으로 확인이 가능하다.
+```{r}
+head(rf.model$err.rate)
+```
+
+
+```{r,message=FALSE}
+library(pROC)
+prob.rf.model=predict(rf.model,newdata=test,type='prob')
+roccurve=roc(test$y~prob.rf.model[,1])
+plot(roccurve,col='red',print.auc=T,auc.polygon=T)
+```
